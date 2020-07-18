@@ -96,6 +96,38 @@ objLoader.load('sofa-p2.obj', function(object) {
 	scene.add(object);
 })
 
+objLoader.setPath('obj/');
+objLoader.load('sofa2-base.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+        }
+    });
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa2-p1.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+        }
+    });
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa2-p2.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+        }
+    });
+	scene.add(object);
+})
+
 // Chao
 texture = new THREE.TextureLoader().load('img/carpet.jpg');
 texture.wrapS = THREE.RepeatWrapping;
@@ -362,5 +394,5 @@ function onWindowResize() {
       uniformsNoise.u_resolution.value.x = renderer.domElement.width;
       uniformsNoise.u_resolution.value.y = renderer.domElement.height;
   }
-  
+
   window.addEventListener('resize', onWindowResize, false);
