@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<title>Room View</title>
+		<link rel="icon" href="https://thumbs.dreamstime.com/b/no-signal-tv-texture-television-grainy-noise-effect-as-background-no-signal-retro-vintage-television-pattern-interfering-no-157996496.jpg">
+		<style>
+			body { margin: 0; overflow: hidden; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<canvas id="mycanvas"></canvas>
+			<div>
+				<script src="https://unpkg.com/three@0.116.1/build/three.js"></script>
+				<script src="https://unpkg.com/three@0.116.1/examples/js/controls/OrbitControls.js"></script>
+				<script src="https://unpkg.com/three@0.116.1/examples/js/loaders/OBJLoader.js"></script>
+				<script src="https://unpkg.com/three@0.116.1/examples/js/loaders/MTLLoader.js"></script>
+				<script id="vertexVideoShader" type="x-shader/x-vertex">
+					varying vec2 vUv;
+
+					void main() {
+					  vUv = uv;
+					  gl_Position = projectionMatrix*modelViewMatrix*vec4(position, 1.0);
+					}
+				  </script>
+				  <script id="fragmentVideoShader" type="x-shader/x-fragment">
+					  uniform sampler2D u_tDiffuse;
+					  uniform vec2 u_resolution;
+					  uniform float u_time;
+					  uniform float u_amount;
+					  uniform float u_angle;
+					  uniform float u_magnitude;
+
+					  varying vec2 vUv;
+
+					  float randomHoriz(vec2 st) {
+						  return fract(sin(dot(st.xy, vec2(0,10000.0)))*43758.5453123)/8.0;
+					  }
+
+					  float random (vec2 st) {
+						  return fract(sin(dot(st.xy ,vec2(12.9898,78.233))) * 43758.5453)/2.0;
+					  }
+
+					  void main() {
+							// armazena um sistema de coordenadas normalizado
+							vec2 st = gl_FragCoord.xy/u_resolution.xy;
+
+							// multiplica a escala do sistema de cordenadas por u_amount
+							st *= u_amount;
+
+							// pega as coordenadas inteiras do sistema para criar um grid
+							vec2 ipos = floor(st);
+
+							// atribui um valor aleatório com base nas coordenadas inteiras
+							float noise = randomHoriz(ipos*u_time);
+
+							// desloca o sistema de coordenadas das cores vermelho e azul
+							float rdn = random(ipos*u_time);
+							vec2 offset = u_magnitude*(1.0+rdn)*vec2( cos(u_angle*(1.0+rdn)), sin(u_angle*(1.0+rdn)));
+							vec4 red = texture2D(u_tDiffuse, vUv + offset);
+							vec4 green = texture2D(u_tDiffuse, vUv);
+							vec4 blue = texture2D(u_tDiffuse, vUv - offset);
+
+							gl_FragColor = vec4(red.r - noise, green.g - noise, blue.b - noise, 1.0);
+					}
+				  </script>
+				  <script id="vertexNoiseShader" type="x-shader/x-vertex">
+						varying vec2 vUv;
+
+						void main() {
+						  vUv = uv;
+						  gl_Position = projectionMatrix*modelViewMatrix*vec4(position, 1.0);
+						}
+				  </script>
+				  <script id="fragmentNoiseShader" type="x-shader/x-fragment">
+					  uniform vec2 u_resolution;
+					  uniform float u_time;
+					  uniform float u_amount;
+
+					  varying vec2 vUv;
+
+					  float random2(vec2 st) {
+						  return fract(sin(dot(st.xy ,vec2(12.9898,78.233))) * 43758.5453);
+					  }
+
+					  void main() {
+						// armazena um sistema de coordenadas normalizado
+						vec2 st = gl_FragCoord.xy/u_resolution.xy;
+
+						// multiplica a escala do sistema de cordenadas por u_amount
+						st *= u_amount;
+
+						// pega as coordenadas inteiras do sistema para criar um grid
+						vec2 ipos = floor(st);
+
+						// atribui um valor aleatório com base nas coordenadas inteiras
+						vec3 noise = vec3(random2(ipos*u_time));
+
+						gl_FragColor = vec4(noise, 1.0);
+					}
+				  </script>
+					<script src="js/dat.gui.min.js"></script>
+				  <script src="./setup.js"></script>
+					<script src="./objects.js"></script>
+					<script src="./controllers.js"></script>
+					<script src="./animation.js"></script>
+			</div>
+	</body>
+</html>
