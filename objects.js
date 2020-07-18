@@ -13,8 +13,6 @@ scene.background = new THREE.CubeTextureLoader()
 // Importacao de modelos junto com mapeamento de material (de textura ou cor)
 var texture;
 
-
-
 // Chao
 texture = new THREE.TextureLoader().load('img/carpet.jpg');
 texture.wrapS = THREE.RepeatWrapping;
@@ -207,7 +205,7 @@ objLoader.load('table-p2.obj', function(object) {
 	scene.add(object);
 })
 
-// Sofa
+// Sofa 1
 var mat_sofa = new THREE.MeshLambertMaterial({color: 0x8c8c97});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
@@ -215,7 +213,7 @@ objLoader.load('sofa-base.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
-            child.name = "sofa";
+            child.name = "sofa 1";
         }
     });
 	scene.add(object);
@@ -227,7 +225,7 @@ objLoader.load('sofa-p1.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
-            child.name = "sofa";
+            child.name = "sofa 1";
         }
     });
 	scene.add(object);
@@ -239,7 +237,43 @@ objLoader.load('sofa-p2.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
-            child.name = "sofa";
+            child.name = "sofa 1";
+        }
+    });
+	scene.add(object);
+})
+
+// Sofa 2
+objLoader.setPath('obj/');
+objLoader.load('sofa2-base.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+            child.name = "sofa 2";
+        }
+    });
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa2-p1.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+            child.name = "sofa 2";
+        }
+    });
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa2-p2.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+            child.name = "sofa 2";
         }
     });
 	scene.add(object);
@@ -372,5 +406,5 @@ function onWindowResize() {
       uniformsNoise.u_resolution.value.x = renderer.domElement.width;
       uniformsNoise.u_resolution.value.y = renderer.domElement.height;
   }
-  
+
   window.addEventListener('resize', onWindowResize, false);

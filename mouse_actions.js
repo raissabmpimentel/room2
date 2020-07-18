@@ -30,7 +30,7 @@ function valueInArray(value, vec) {
 
 /// TESTE
 var INTERSECTED = null;
-var list_names = ["lampada","sofa","batente","mesa"];
+var list_names = ["lampada","sofa 1","sofa 2","batente","mesa"];
 var list_materials = [];
 
 function intersec() {
