@@ -13,88 +13,7 @@ scene.background = new THREE.CubeTextureLoader()
 // Importacao de modelos junto com mapeamento de material (de textura ou cor)
 var texture;
 
-// Batente da TV
-texture = new THREE.TextureLoader().load('img/wood.jpg');
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set( 5, 3 );
-var mat_wood = new THREE.MeshLambertMaterial({map: texture, color: 0xffffff});
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('shelves.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_wood;
-        }
-    });
-	scene.add(object);
-})
 
-// Pes da mesa
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('table-feet.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_wood;
-        }
-    });
-	scene.add(object);
-})
-
-
-// Haste do batente
-var mat_sup = new THREE.MeshPhongMaterial({
-  color: 0x4c4c4c,
-  emissive: 0x141414,
-  specular: 0x636363,
-  shininess: 20
-});
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('shelves-sup.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sup;
-        }
-    });
-	scene.add(object);
-})
-
-// Sofa
-var mat_sofa = new THREE.MeshLambertMaterial({color: 0x8c8c97});
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa-base.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-        }
-    });
-	scene.add(object);
-})
-
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa-p1.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-        }
-    });
-	scene.add(object);
-})
-
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa-p2.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-        }
-    });
-	scene.add(object);
-})
 
 // Chao
 texture = new THREE.TextureLoader().load('img/carpet.jpg');
@@ -227,19 +146,6 @@ objLoader.load('window-glass.obj', function(object) {
 	scene.add(object);
 })
 
-// Tabua da mesa
-var mat_wood_2 = new THREE.MeshLambertMaterial({color: 0x96653A});
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('table-p2.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_wood_2;
-        }
-    });
-	scene.add(object);
-})
-
 // Lampada
 var mat_light = new THREE.MeshLambertMaterial({color: 0xFFFFCC});
 var objLoader = new THREE.OBJLoader();
@@ -247,10 +153,10 @@ objLoader.setPath('obj/');
 objLoader.load('light-bulb.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
-			       child.material = mat_light;
+                child.material = mat_light;
+                child.name = "lampada";
         }
-	});
-
+    });
 	scene.add(object);
 })
 
@@ -267,11 +173,114 @@ var objLoader = new THREE.OBJLoader();
   objLoader.load('light-base.obj', function(object) {
     object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
-			       child.material = mat_lightbase;
+                child.material = mat_lightbase;
+                child.name = "lampada";
         }
-	});
+    });
 	scene.add(object);
 })
+
+// Pes da mesa
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('table-feet.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_wood;
+            child.name = "mesa";
+        }
+    });
+	scene.add(object);
+})
+
+// Tabua da mesa
+var mat_wood_2 = new THREE.MeshLambertMaterial({color: 0x96653A});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('table-p2.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_wood_2;
+            child.name = "mesa";
+        }
+    });
+	scene.add(object);
+})
+
+// Sofa
+var mat_sofa = new THREE.MeshLambertMaterial({color: 0x8c8c97});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa-base.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+            child.name = "sofa";
+        }
+    });
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa-p1.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+            child.name = "sofa";
+        }
+    });
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('sofa-p2.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_sofa;
+            child.name = "sofa";
+        }
+    });
+	scene.add(object);
+})
+
+// Batente da TV
+texture = new THREE.TextureLoader().load('img/wood.jpg');
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set( 5, 3 );
+var mat_wood = new THREE.MeshLambertMaterial({map: texture, color: 0xffffff});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('shelves.obj', function(object) {
+	object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_wood;
+            child.name = "batente";
+        }
+    });
+	scene.add(object);
+})
+
+// Haste do batente
+var mat_sup = new THREE.MeshPhongMaterial({
+    color: 0x4c4c4c,
+    emissive: 0x141414,
+    specular: 0x636363,
+    shininess: 20
+  });
+  var objLoader = new THREE.OBJLoader();
+  objLoader.setPath('obj/');
+  objLoader.load('shelves-sup.obj', function(object) {
+      object.traverse(function(child) {
+          if (child instanceof THREE.Mesh){
+              child.material = mat_sup;
+              child.name = "batente";
+          }
+      });
+      scene.add(object);
+  })
 
 // Molde da TV
 var mat_tv = new THREE.MeshPhysicalMaterial({color: 0x141414,
@@ -287,7 +296,8 @@ objLoader.load('TV-frame.obj', function(object) {
 
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
-			       child.material = mat_tv;
+                   child.material = mat_tv;
+                   child.name = "batente";
         }
 	});
 	scene.add(object);
