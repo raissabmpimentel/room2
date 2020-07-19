@@ -13,50 +13,54 @@ function onMouseMove( event ) {
     raycaster.setFromCamera( mouse, camera );
 }
 
-var drag_obj = [];
-var dragControls;
+var state_drag;
+var crtl_table, crtl_sofa_1, ctrl_sofa_2;
 
-function init_drag() {
-    dragControls = new THREE.DragControls(drag_obj, camera, renderer.domElement);
-    dragControls.transformGroup = false;
-    dragControls.addEventListener('dragstart', function(event) {
+function init_table() {
+  crtl_table = new THREE.DragControls(drag_table, camera, renderer.domElement);
+  crtl_table.transformGroup = true;
+  crtl_table.addEventListener('dragstart', function(event) {
+    controls.enabled = false;
+    state_drag = true;
+  });
+  crtl_table.addEventListener('dragend', function(event) {
+    controls.enabled = true;
+    state_drag = false;
+  });
+
+}
+
+function init_sofa_1() {
+    ctrl_sofa_1 = new THREE.DragControls(drag_sofa_1, camera, renderer.domElement);
+    ctrl_sofa_1.transformGroup = true;
+    ctrl_sofa_1.addEventListener('dragstart', function(event) {
       controls.enabled = false;
+      state_drag = true;
     });
-    dragControls.addEventListener('dragend', function(event) {
+    ctrl_sofa_1.addEventListener('dragend', function(event) {
       controls.enabled = true;
+      state_drag = false;
     });
 
   }
 
-init_drag();
+  function init_sofa_2() {
+    ctrl_sofa_2 = new THREE.DragControls(drag_sofa_2, camera, renderer.domElement);
+    ctrl_sofa_2.transformGroup = true;
+    ctrl_sofa_2.addEventListener('dragstart', function(event) {
+      controls.enabled = false;
+      state_drag = true;
+    });
+    ctrl_sofa_2.addEventListener('dragend', function(event) {
+      controls.enabled = true;
+      state_drag = false;
+    });
 
-function raycast(event) {
-    drag_obj.length = 0;
-    var list_obj = [];
-    var group_obj = new THREE.Group();
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-    
-    // update the picking ray with the camera and mouse position
-    raycaster.setFromCamera( mouse, camera );
+  }
 
-     intersects = raycaster.intersectObjects( scene.children, true );
-     if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names))
-     {
-             scene.traverse(function(child) {
-                 if (child.name === INTERSECTED.name) {
-                    drag_obj.push(child); //apply same material to all meshes
-                    //list_obj.push(child);
-                    //console.log(child.clone());
-                 }
-               });
-               
-               //drag_obj.push(group_obj);
-     } 
-        
-}
-
-window.addEventListener( 'mousedown', raycast, false );
+init_table();
+init_sofa_1();
+init_sofa_2();
 
 function valueInArray(value, vec) {
     var result = false;
@@ -72,9 +76,8 @@ function valueInArray(value, vec) {
     return result;
 }
 
-/// TESTE
 var INTERSECTED = null;
-var list_names = ["lampada","sofa 1","sofa 2","batente","mesa"];
+var list_names = ["sofa 1","sofa 2","mesa"];
 
 
 function intersec() {
@@ -83,55 +86,52 @@ function intersec() {
     var intersects = raycaster.intersectObjects( scene.children, true);
     
     var mat = new THREE.MeshLambertMaterial({color: 0xffa1a1});
-
-    // Baseado em https://stackoverflow.com/questions/38314521/change-color-of-mesh-using-mouseover-in-three-js
+    if (!state_drag)
+    {
+        // Baseado em https://stackoverflow.com/questions/38314521/change-color-of-mesh-using-mouseover-in-three-js
     if ( intersects.length > 0 )
     {
-    // if the closest object intersected is not the currently stored intersection object
+    
     if ( intersects[ 0 ].object != INTERSECTED )
     {
         
-        // restore previous intersection object (if it exists) to its original color
+        
         if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names))
             {
                     scene.traverse(function(child) {
                         if (child.name === INTERSECTED.name) {
-                            child.material = child.currentMat; //apply same material to all meshes
+                            child.material = child.currentMat; 
                         }
                       });
             } 
             
-        
-        // store reference to closest object as current intersection object
         INTERSECTED = intersects[0].object;
-        // store color of closest object (for later restoration)
-        //INTERSECTED.currentMat = INTERSECTED.material;
         if(valueInArray(INTERSECTED.name,list_names))
                 {
                     scene.traverse(function(child) {
                         if (child.name === INTERSECTED.name) {
                             child.currentMat = child.material;
-                            child.material = mat; //apply same material to all meshes
+                            child.material = mat; 
                         }
                       });
                 }
     }
     }
-    else // there are no intersections
+    else 
     {
-        // restore previous intersection object (if it exists) to its original color
         if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names))
             {
                     scene.traverse(function(child) {
                         if (child.name === INTERSECTED.name) {
-                          child.material = child.currentMat; //apply same material to all meshes
+                          child.material = child.currentMat; 
                         }
                       });
             } 
-        // remove previous intersection object reference
-        //     by setting current intersection object to "nothing"
+
         INTERSECTED = null;
     }
+    }
+    
 }
 
 window.addEventListener( 'mousemove', onMouseMove, false );

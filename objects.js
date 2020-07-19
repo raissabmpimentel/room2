@@ -152,7 +152,6 @@ objLoader.load('light-bulb.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
                 child.material = mat_light;
-                child.name = "lampada";
         }
     });
 	scene.add(object);
@@ -172,111 +171,56 @@ var objLoader = new THREE.OBJLoader();
     object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
                 child.material = mat_lightbase;
-                child.name = "lampada";
         }
     });
 	scene.add(object);
 })
 
-// Pes da mesa
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('table-feet.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_wood;
-            child.name = "mesa";
-        }
-    });
-	scene.add(object);
-})
+var drag_table = [];
+var drag_sofa_1 = [];
+var drag_sofa_2 = [];
 
 // Tabua da mesa
 var mat_wood_2 = new THREE.MeshLambertMaterial({color: 0x96653A});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
-objLoader.load('table-p2.obj', function(object) {
+objLoader.load('table.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_wood_2;
             child.name = "mesa";
         }
     });
-	scene.add(object);
+    scene.add(object);
+    drag_table.push(object);
 })
 
 // Sofa 1
 var mat_sofa = new THREE.MeshLambertMaterial({color: 0x8c8c97});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
-objLoader.load('sofa-base.obj', function(object) {
+objLoader.load('sofat1.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
             child.name = "sofa 1";
         }
     });
-	scene.add(object);
-})
-
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa-p1.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-            child.name = "sofa 1";
-        }
-    });
-	scene.add(object);
-})
-
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa-p2.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-            child.name = "sofa 1";
-        }
-    });
-	scene.add(object);
+    scene.add(object);
+    drag_sofa_1.push(object);
 })
 
 // Sofa 2
 objLoader.setPath('obj/');
-objLoader.load('sofa2-base.obj', function(object) {
+objLoader.load('sofat2.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
             child.name = "sofa 2";
         }
     });
-	scene.add(object);
-})
-
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa2-p1.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-            child.name = "sofa 2";
-        }
-    });
-	scene.add(object);
-})
-
-var objLoader = new THREE.OBJLoader();
-objLoader.setPath('obj/');
-objLoader.load('sofa2-p2.obj', function(object) {
-	object.traverse(function(child) {
-        if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
-            child.name = "sofa 2";
-        }
-    });
-	scene.add(object);
+    scene.add(object);
+    drag_sofa_2.push(object);
 })
 
 // Batente da TV
@@ -291,7 +235,6 @@ objLoader.load('shelves.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_wood;
-            child.name = "batente";
         }
     });
 	scene.add(object);
@@ -310,7 +253,6 @@ var mat_sup = new THREE.MeshPhongMaterial({
       object.traverse(function(child) {
           if (child instanceof THREE.Mesh){
               child.material = mat_sup;
-              child.name = "batente";
           }
       });
       scene.add(object);
@@ -331,7 +273,6 @@ objLoader.load('TV-frame.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
                    child.material = mat_tv;
-                   child.name = "batente";
         }
 	});
 	scene.add(object);
