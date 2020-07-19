@@ -62,7 +62,8 @@ var animate = function () {
 
 	requestAnimationFrame( animate );
 
-	intersec();
+	// Verificar interseccoes com objetos que podem ser transportados
+	verify_intersec();
 
 	// Atualizar visao
 	controls.update();

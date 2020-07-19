@@ -21,6 +21,7 @@ var controls = new THREE.OrbitControls(camera, renderer.domElement);
  controls.enableDamping = true;
  controls.dampingFactor = 0.25;
  controls.enableZoom = true;
+ controls.maxDistance = 1400; // Limitar distancia maxima do zoom
 
 // Iluminacao ambiente
 var keyLight = new THREE.DirectionalLight(0x808080, 0.5);

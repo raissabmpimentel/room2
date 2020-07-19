@@ -60,6 +60,7 @@ objLoader.load('back-wall.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_wall_1;
+            
         }
     });
 	scene.add(object);
@@ -308,6 +309,7 @@ var objLoader = new THREE.OBJLoader();
 	scene.add(object);
 })
 
+// Listas de objetos para serem transportados pelo DragControls
 var drag_table = [];
 var drag_sofa_1 = [];
 var drag_sofa_2 = [];
@@ -320,11 +322,11 @@ objLoader.load('table.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_wood_2;
-            child.name = "mesa";
+            child.name = "mesa"; //Nome para identificar a mesa, a ser usado ao identificar a selecao
         }
     });
     scene.add(object);
-    drag_table.push(object);
+    drag_table.push(object); //Colocar na lista de objetos para o Drag Controls da mesa
 })
 
 // Sofa 1
@@ -335,11 +337,12 @@ objLoader.load('sofa1.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
-            child.name = "sofa 1";
+            child.name = "sofa 1"; //Nome para identificar o sofa 1, a ser usado ao identificar a selecao
+            
         }
     });
     scene.add(object);
-    drag_sofa_1.push(object);
+    drag_sofa_1.push(object); //Colocar na lista de objetos para o Drag Controls do sofa 1
 })
 
 // Sofa 2
@@ -348,11 +351,11 @@ objLoader.load('sofa2.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
-            child.name = "sofa 2";
+            child.name = "sofa 2"; //Nome para identificar o sofa 2, a ser usado ao identificar a selecao
         }
     });
     scene.add(object);
-    drag_sofa_2.push(object);
+    drag_sofa_2.push(object); //Colocar na lista de objetos para o Drag Controls do sofa 2
 })
 
 // Batente da TV
