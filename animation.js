@@ -62,6 +62,8 @@ var animate = function () {
 
 	requestAnimationFrame( animate );
 
+	intersec();
+
 	// Atualizar visao
 	controls.update();
 
