@@ -1,7 +1,7 @@
 # Blender v2.83.0 OBJ File: ''
 # www.blender.org
 mtllib door-frame.mtl
-o DoorFrame_DoorFrane.001
+o DoorFrame_DoorFrane
 v 93.636917 -115.000000 -206.458618
 v 93.636917 -115.000000 -211.082748
 v 99.455017 -115.000000 -211.082748
@@ -40,7 +40,7 @@ vn 1.0000 0.0000 0.0000
 vn -0.0000 0.0000 -1.0000
 vn 0.0000 -1.0000 0.0000
 vn -0.0000 0.0000 1.0000
-usemtl Door_material.001
+usemtl Door_material
 s off
 f 4//1 5//1 2//1 1//1
 f 8//1 13//1 20//1 10//1

@@ -31,6 +31,15 @@ objLoader.load('floor.obj', function(object) {
 	scene.add(object);
 })
 
+// Chao do Jardim
+// definir e posicionar plano, analogo ao modelo garden-floor.obj
+var geometry = new THREE.PlaneGeometry( 750, 250, 32 );
+var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.x = + Math.PI/2;
+plane.position.set(100,-112,435);
+scene.add( plane );
+
 // Teto
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
@@ -98,7 +107,7 @@ texture.anisotropy = 16;
 var mat_wall_4 = new THREE.MeshLambertMaterial({map: texture, color: 0xFFFFFF});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
-objLoader.load('wall2.obj', function(object) {
+objLoader.load('garden-wall.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_wall_4;
@@ -144,6 +153,129 @@ objLoader.load('window-glass.obj', function(object) {
 	scene.add(object);
 })
 
+// Porta do jardim
+var mat_garden_frame = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
+    roughness: 0.5,
+    metalness: 1,
+    envMapIntensity: 3
+});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('garden-door-frame.obj', function(object) {
+  object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+			       child.material = mat_garden_frame;
+        }
+	});
+	scene.add(object);
+})
+var mat_garden_door = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
+    roughness: 0.5,
+    metalness: 1,
+    envMapIntensity: 3
+});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('garden-door1.obj', function(object) {
+  object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+			       child.material = mat_garden_door;
+        }
+	});
+	scene.add(object);
+})
+
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('garden-door2.obj', function(object) {
+  object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+			       child.material = mat_garden_door;
+        }
+	});
+	scene.add(object);
+})
+
+// Vidro do jardim
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('garden-glass1.obj', function(object) {
+  object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+			       child.material = mat_glass;
+        }
+	});
+	scene.add(object);
+})
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('garden-glass2.obj', function(object) {
+  object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+			       child.material = mat_glass;
+        }
+	});
+	scene.add(object);
+})
+
+// Macaneta do jardim
+var mat_garden_knob = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('garden-knob.obj', function(object) {
+  object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+			       child.material = mat_garden_knob;
+        }
+	});
+	scene.add(object);
+})
+
+// Macaneta da porta
+var mat_knob = new THREE.MeshPhongMaterial({
+    color: 0x4c4c4c,
+    emissive: 0x141414,
+    specular: 0x636363,
+    shininess: 20
+  });
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('knob.obj', function(object) {
+    object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_knob;
+        }
+    });
+    scene.add(object);
+})
+
+// Porta
+var mat_door = new THREE.MeshLambertMaterial({color: 0xffffff});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('door.obj', function(object) {
+    object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_door;
+        }
+    });
+    scene.add(object);
+})
+
+var mat_door_frame = new THREE.MeshLambertMaterial({color: 0xffffff});
+var objLoader = new THREE.OBJLoader();
+objLoader.setPath('obj/');
+objLoader.load('door-frame.obj', function(object) {
+    object.traverse(function(child) {
+        if (child instanceof THREE.Mesh){
+            child.material = mat_door_frame;
+        }
+    });
+    scene.add(object);
+})
+
+
+
 // Lampada
 var mat_light = new THREE.MeshLambertMaterial({color: 0xFFFFCC});
 var objLoader = new THREE.OBJLoader();
@@ -180,7 +312,7 @@ var drag_table = [];
 var drag_sofa_1 = [];
 var drag_sofa_2 = [];
 
-// Tabua da mesa
+// Mesa central
 var mat_wood_2 = new THREE.MeshLambertMaterial({color: 0x96653A});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
@@ -199,7 +331,7 @@ objLoader.load('table.obj', function(object) {
 var mat_sofa = new THREE.MeshLambertMaterial({color: 0x8c8c97});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
-objLoader.load('sofat1.obj', function(object) {
+objLoader.load('sofa1.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
@@ -212,7 +344,7 @@ objLoader.load('sofat1.obj', function(object) {
 
 // Sofa 2
 objLoader.setPath('obj/');
-objLoader.load('sofat2.obj', function(object) {
+objLoader.load('sofa2.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
