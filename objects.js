@@ -34,7 +34,7 @@ objLoader.load('floor.obj', function(object) {
 // Chao do Jardim
 // definir e posicionar plano, analogo ao modelo garden-floor.obj
 var geometry = new THREE.PlaneGeometry( 750, 250, 32 );
-var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+var material = new THREE.MeshBasicMaterial( {color: 0x003000, side: THREE.DoubleSide} );
 var plane = new THREE.Mesh( geometry, material );
 plane.rotation.x = + Math.PI/2;
 plane.position.set(100,-112,435);
@@ -60,7 +60,7 @@ objLoader.load('back-wall.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
             child.material = mat_wall_1;
-            
+
         }
     });
 	scene.add(object);
@@ -170,9 +170,9 @@ objLoader.load('garden-door-frame.obj', function(object) {
 	});
 	scene.add(object);
 })
-var mat_garden_door = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
-    roughness: 0.5,
-    metalness: 1,
+var mat_garden_door = new THREE.MeshStandardMaterial({color: 0x6c6c6c,
+    roughness: 0.4,
+    metalness: 0.2,
     envMapIntensity: 3
 });
 var objLoader = new THREE.OBJLoader();
@@ -220,7 +220,13 @@ objLoader.load('garden-glass2.obj', function(object) {
 })
 
 // Macaneta do jardim
-var mat_garden_knob = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+var mat_garden_knob = new THREE.MeshPhysicalMaterial({color: 0x141414,
+        emissive: 0x000000,
+        roughness: 0.5,
+        metalness: 0.2,
+        reflectivity: 0.37,
+        clearcoatRoughness: 0.5
+});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
 objLoader.load('garden-knob.obj', function(object) {
@@ -263,7 +269,7 @@ objLoader.load('door.obj', function(object) {
     scene.add(object);
 })
 
-var mat_door_frame = new THREE.MeshLambertMaterial({color: 0xffffff});
+var mat_door_frame = new THREE.MeshLambertMaterial({color: 0xe1e1e1});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
 objLoader.load('door-frame.obj', function(object) {
@@ -274,8 +280,6 @@ objLoader.load('door-frame.obj', function(object) {
     });
     scene.add(object);
 })
-
-
 
 // Lampada
 var mat_light = new THREE.MeshLambertMaterial({color: 0xFFFFCC});
@@ -338,7 +342,7 @@ objLoader.load('sofa1.obj', function(object) {
         if (child instanceof THREE.Mesh){
             child.material = mat_sofa;
             child.name = "sofa 1"; //Nome para identificar o sofa 1, a ser usado ao identificar a selecao
-            
+
         }
     });
     scene.add(object);
