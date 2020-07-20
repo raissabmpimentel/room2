@@ -60,6 +60,8 @@ var animate = function () {
 		}
 	}
 
+	grassMaterial.uniforms.time.value = time;
+
 	requestAnimationFrame( animate );
 
 	// Verificar interseccoes com objetos que podem ser transportados
