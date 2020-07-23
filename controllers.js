@@ -61,7 +61,7 @@ function onVolumeChange() {
 
 var clockColorParams = {
 	clock: "#FFFFFF",
-	clockWrapper: "#AAAAAA",
+	clockWrapper: "#000000",
 	line: "#000000",
 	hands: "#000000",
 	handSecond: "#FF0000"

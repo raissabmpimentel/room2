@@ -604,7 +604,7 @@ scene.add(group);
 var materials = {
 	clockWrapper: new THREE.MeshPhongMaterial(
 		{
-			color: 0xAAAAAA,
+			color: 0x000000,
 			shininess: 10,
 			shading: THREE.FlatShading
 		}
@@ -668,7 +668,6 @@ var clock = new THREE.Mesh(clockGeometry, materials.clock);
 clock.translateZ(0);
 clock.rotateX(Math.PI / 2);
 group.add(clock);
-group.rotateY(Math.PI);
 
 var spacing = 5;
 var lineLength = 20;
@@ -728,9 +727,10 @@ var circle = new THREE.Mesh( circleGeometry, materials.handSecondCircle);
 circle.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthFace/2 + 5 );
 group.add(circle);
 
-var scale = 0.1;
+var scale = 0.15;
 group.scale.set(scale, scale, scale);
-group.position.set(-100, 60, 300);
+group.position.set(208, 50, 10);
+group.rotateY(-Math.PI/2);
 
 // Molde da TV
 var mat_tv = new THREE.MeshPhysicalMaterial({color: 0x141414,
