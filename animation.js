@@ -18,17 +18,19 @@ camera.add(listener);
 
 // Declaracao de variaveis
 var noise = false;
-var time = 30;
+var timeAnim = 30;
+var timePassed = 0;
 
 // Funcao para animar a cena
-var animate = function () {
+function render(time) {
+	requestAnimationFrame(render);
 
 	randomizeParams();
-	if(time > 29){
-		time = 0.0;
+	if(timeAnim > 29){
+		timeAnim = 0.0;
 
 		if(noise == false){
-			uniformsNoise.u_time.value = time;
+			uniformsNoise.u_time.value = timeAnim;
 
 			soundNoise.setVolume(0.15*(soundParams.mute == true ? 0 : 1)*(soundParams.volume/100));
 			soundVideo.setVolume(0.0);
@@ -38,7 +40,7 @@ var animate = function () {
 
 			noise = true;
 		} else{
-			uniformsVideo.u_time.value = time;
+			uniformsVideo.u_time.value = timeAnim;
 
 			soundVideo.setVolume(1.0*(soundParams.mute == true ? 0 : 1)*(soundParams.volume/100));
 			soundNoise.setVolume(0.0);
@@ -51,18 +53,34 @@ var animate = function () {
 			noise = false;
 		}
 	} else {
-		time += 0.05;
+		timeAnim += 0.05;
 
 		if(noise == true){
-		    uniformsNoise.u_time.value = time;
+		    uniformsNoise.u_time.value = timeAnim;
 		} else{
-		    uniformsVideo.u_time.value = time;
+		    uniformsVideo.u_time.value = timeAnim;
 		}
 	}
 
-	grassMaterial.uniforms.time.value = time;
+	grassMaterial.uniforms.time.value = timeAnim;
 
-	requestAnimationFrame( animate );
+	if (time - timePassed > 1000) {
+		timePassed = time;
+
+		var date = new Date();
+
+		var hrs = date.getHours();
+		var min = date.getMinutes();
+		var sec = date.getSeconds();
+
+		var handHourR = (30 * (hrs > 12 ? hrs - 12 : hrs) * Math.PI) / 180;
+		var handMinuteR = (6 * min * Math.PI) / 180;
+		var handSecondR = (6 * sec * Math.PI) / 180;
+
+		handHourParent.rotation.z = -handHourR;
+		handMinuteParent.rotation.z = -handMinuteR;
+		handSecondParent.rotation.z = -handSecondR;
+	}
 
 	// Verificar interseccoes com objetos que podem ser transportados
 	verify_intersec();
@@ -71,8 +89,7 @@ var animate = function () {
 	controls.update();
 
 	// Desenhar cena
-	renderer.render(scene, camera);
-};
+	renderer.render( scene, camera );
+}
 
-// Invoca o loop da animação
-animate();
+render();

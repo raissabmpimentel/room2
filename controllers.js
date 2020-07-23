@@ -55,3 +55,43 @@ function onVolumeChange() {
     soundVideo.setVolume(1.0*(soundParams.mute == true ? 0.0 : 1.0)*(soundParams.volume/100));
   }
 }
+
+
+// Clock controllers
+
+var clockColorParams = {
+	clock: "#FFFFFF",
+	clockWrapper: "#AAAAAA",
+	line: "#000000",
+	hands: "#000000",
+	handSecond: "#FF0000"
+};
+
+var f3 = gui.addFolder('Clock');
+f3.addColor(clockColorParams, 'clockWrapper').onChange(onClockWrapperColorChange);
+f3.addColor(clockColorParams, 'clock').onChange(onClockColorChange);
+f3.addColor(clockColorParams, 'hands').onChange(onHandsColorChange);
+f3.addColor(clockColorParams, 'handSecond').onChange(onHandSecondColorChange);
+f3.addColor(clockColorParams, 'line').onChange(onLineColorChange);
+
+function onClockWrapperColorChange() {
+	materials.clockWrapper.color.setHex(clockColorParams.clockWrapper.replace('#', '0x'));
+};
+
+function onClockColorChange() {
+	materials.clock.color.setHex(clockColorParams.clock.replace('#', '0x'));
+};
+
+function onHandsColorChange() {
+	materials.handHour.color.setHex(clockColorParams.hands.replace('#', '0x'));
+	materials.handMinute.color.setHex(clockColorParams.hands.replace('#', '0x'));
+};
+
+function onHandSecondColorChange() {
+	materials.handSecond.color.setHex(clockColorParams.handSecond.replace('#', '0x'));
+	materials.handSecondCircle.color.setHex(clockColorParams.handSecond.replace('#', '0x'));
+};
+
+function onLineColorChange() {
+	materials.line.color.setHex(clockColorParams.line.replace('#', '0x'));
+};

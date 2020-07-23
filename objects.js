@@ -597,6 +597,141 @@ var mat_sup = new THREE.MeshPhongMaterial({
       scene.add(object);
   })
 
+// Relogio
+var group = new THREE.Group();
+scene.add(group);
+
+var materials = {
+	clockWrapper: new THREE.MeshPhongMaterial(
+		{
+			color: 0xAAAAAA,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	),
+	clock: new THREE.MeshPhongMaterial(
+		{
+			color: 0xFFFFFF,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	),
+	line: new THREE.MeshPhongMaterial(
+		{
+			color: 0x000000,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	),
+	handHour: new THREE.MeshPhongMaterial(
+		{
+			color: 0x000000,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	),
+	handMinute: new THREE.MeshPhongMaterial(
+		{
+			color: 0x000000,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	),
+	handSecond: new THREE.MeshPhongMaterial(
+		{
+			color: 0xFF0000,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	),
+	handSecondCircle: new THREE.MeshPhongMaterial(
+		{
+			color: 0xFF0000,
+			shininess: 10,
+			shading: THREE.FlatShading
+		}
+	)
+};
+
+var bigRadius = 110;
+var depthWrapper = 10;
+var clockWrapperGeometry = new THREE.CylinderGeometry(bigRadius, bigRadius, depthWrapper, 360)
+var clockWrapper = new THREE.Mesh(clockWrapperGeometry, materials.clockWrapper);
+clockWrapper.translateZ(0);
+clockWrapper.rotateX(Math.PI / 2);
+group.add(clockWrapper);
+
+var radius = 100;
+var depthFace = 20;
+var clockGeometry = new THREE.CylinderGeometry(radius, radius, depthFace, 360)
+var clock = new THREE.Mesh(clockGeometry, materials.clock);
+clock.translateZ(0);
+clock.rotateX(Math.PI / 2);
+group.add(clock);
+group.rotateY(Math.PI);
+
+var spacing = 5;
+var lineLength = 20;
+var lineWidth = 5;
+
+for (var i = 0; i < 60; i += 5) {
+	var lineGeometry = null;
+	var line = null;
+	var lineParent = new THREE.Group();
+	var lineAngle = (6 * Math.PI * i)/180;
+	lineParent.rotateZ(lineAngle);
+	lineGeometry = new THREE.BoxGeometry(lineWidth, lineLength, 1);
+
+	line = new THREE.Mesh(lineGeometry, materials.line);
+	line.translateOnAxis(new THREE.Vector3(0, 1, 0), radius - lineLength/2 - spacing);
+	line.translateOnAxis(new THREE.Vector3(0, 0, 1), depthFace/2 );
+
+	lineParent.add(line);
+	group.add(lineParent);
+}
+
+var spacingHand = 15;
+
+var lineWidthHandHour = 5;
+var handHourLength = 60;
+var boxGeometry3 = new THREE.BoxGeometry(lineWidthHandHour, handHourLength, 1);
+var handHourParent = new THREE.Object3D();
+var handHour = new THREE.Mesh(boxGeometry3, materials.handHour);
+handHourParent.add(handHour);
+handHour.translateOnAxis(new THREE.Vector3( 0, 1, 0 ), handHourLength / 2 - spacingHand);
+handHour.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthFace/2 + 2);
+group.add(handHourParent);
+
+var lineWidthHandMinute = 5;
+var handMinuteLength = 80;
+var boxGeometry4 = new THREE.BoxGeometry(lineWidthHandMinute, handMinuteLength, 1);
+var handMinuteParent = new THREE.Object3D();
+var handMinute = new THREE.Mesh(boxGeometry4, materials.handMinute);
+handMinuteParent.add(handMinute);
+handMinute.translateOnAxis(new THREE.Vector3( 0, 1, 0 ), handMinuteLength / 2 - spacingHand);
+handMinute.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthFace/2 + 3);
+group.add(handMinuteParent);
+
+var lineWidthHandSecond = 1;
+var handSecondLength = 90;
+var boxGeometry5 = new THREE.BoxGeometry(lineWidthHandSecond, handSecondLength, 1);
+var handSecondParent = new THREE.Object3D();
+var handSecond = new THREE.Mesh(boxGeometry5, materials.handSecond);
+handSecondParent.add(handSecond);
+handSecond.translateOnAxis(new THREE.Vector3( 0, 1, 0 ), handSecondLength / 2 - spacingHand);
+handSecond.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthFace/2 + 4);
+group.add(handSecondParent);
+
+var radiusSmall = 3;
+var circleGeometry = new THREE.CircleGeometry(radiusSmall, 360 );
+var circle = new THREE.Mesh( circleGeometry, materials.handSecondCircle);
+circle.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthFace/2 + 5 );
+group.add(circle);
+
+var scale = 0.1;
+group.scale.set(scale, scale, scale);
+group.position.set(-100, 60, 300);
+
 // Molde da TV
 var mat_tv = new THREE.MeshPhysicalMaterial({color: 0x141414,
         emissive: 0x000000,
