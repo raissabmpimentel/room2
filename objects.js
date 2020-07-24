@@ -40,38 +40,25 @@ plane.rotation.x = + Math.PI/2;
 plane.position.set(100,-112,435);
 scene.add( plane );
 
-// Grama
+// Grama [baseada no exemplo: https://al-ro.github.io/]
 /////
-//Variables for blade mesh
+// variaveis para o mesh de uma folha
 var joints = 4;
 var bladeWidth = 0.12;
 var bladeHeight = 1;
-//Patch side length
-/////TODO ajust final width
-var width = 1000000;
-//Number of vertices on ground plane side
-var resolution = 64;
-//Distance between two ground plane vertices
-var delta = width/resolution;
-//Radius of the sphere onto which the ground plane is bended
-var radius = 240;
-//User movement speed
-//var speed = 3;
-//The global coordinates
-//The geometry never leaves a box of width*width around (0, 0)
-//But we track where in space the camera would be globally
+// area em que se pode adicionar grama
+var width = 1000000; // quanto maior mais liberdade de posição
+
 var pos = new THREE.Vector2(0.01, 0.01);
 
-//Number of blades
+// numero de folhas de grama a serem criadas
 var instances = 200000;
-//Height over horizon in range [0, PI/2.0]
-var elevation = 0.2;
-//Rotation around Y axis in range [0, 2*PI]
+
+// variaveis para o shader utilizado na grama
+var resolution = 64;
+var delta = width/resolution;
 var azimuth = 0.4;
-
-var fogFade = 0.005;
-
-//Lighting variables for grass
+var elevation = 0.2;
 var ambientStrength = 0.7;
 var translucencyStrength = 1.5;
 var specularStrength = 0.5;
@@ -80,8 +67,7 @@ var shininess = 256;
 var sunColour = new THREE.Vector3(1.0, 1.0, 1.0);
 var specularColour = new THREE.Vector3(1.0, 1.0, 1.0);
 
-//Get alpha map and blade texture
-//These have been taken from "Realistic real-time grass rendering" by Eddie Lee, 2010
+// mapeamento das texturas a serem aplicadas nas folhas de grama
 var loader = new THREE.TextureLoader();
 loader.crossOrigin = '';
 var grassTexture = loader.load( 'img/blade_diffuse.jpg' );
@@ -90,17 +76,17 @@ var noiseTexture = loader.load( 'img/perlinFbm.jpg' );
 noiseTexture.wrapS = THREE.RepeatWrapping;
 noiseTexture.wrapT = THREE.RepeatWrapping;
 
-//Define base geometry that will be instanced. We use a plane for an individual blade of grass
+// definir um plano para geometria de uma folha de grama
 var grassBaseGeometry = new THREE.PlaneBufferGeometry(bladeWidth, bladeHeight, 1, joints);
 grassBaseGeometry.translate(0, bladeHeight/2, 0);
 
-//Define the bend of the grass blade as the combination of three quaternion rotations
+// para curvatura das folhas deve aplicar uma rotação, definida pelos três quaternions a seguir
 let vertex = new THREE.Vector3();
 let quaternion0 = new THREE.Quaternion();
 let quaternion1 = new THREE.Quaternion();
 let x, y, z, w, angle, sinAngle, rotationAngle;
 
-//Rotate around Y
+// rotação em y
 angle = 0.05;
 sinAngle = Math.sin(angle / 2.0);
 rotationAxis = new THREE.Vector3(0, 1, 0);
@@ -110,7 +96,7 @@ z = rotationAxis.z * sinAngle;
 w = Math.cos(angle / 2.0);
 quaternion0.set(x, y, z, w);
 
-//Rotate around X
+// rotação em x
 angle = 0.3;
 sinAngle = Math.sin(angle / 2.0);
 rotationAxis.set(1, 0, 0);
@@ -120,10 +106,10 @@ z = rotationAxis.z * sinAngle;
 w = Math.cos(angle / 2.0);
 quaternion1.set(x, y, z, w);
 
-//Combine rotations to a single quaternion
+// combinar rotações em um unico quaternion
 quaternion0.multiply(quaternion1);
 
-//Rotate around Z
+// rotação em z
 angle = 0.1;
 sinAngle = Math.sin(angle / 2.0);
 rotationAxis.set(0, 0, 1);
@@ -133,12 +119,12 @@ z = rotationAxis.z * sinAngle;
 w = Math.cos(angle / 2.0);
 quaternion1.set(x, y, z, w);
 
-//Combine rotations to a single quaternion
+// combinar rotações em um unico quaternion
 quaternion0.multiply(quaternion1);
 
 let quaternion2 = new THREE.Quaternion();
 
-//Bend grass base geometry for more organic look
+// aplicar curvatura na folha de grama para adicionar realismo
 for(let v = 0; v < grassBaseGeometry.attributes.position.array.length; v += 3){
 	quaternion2.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
 	vertex.x = grassBaseGeometry.attributes.position.array[v];
@@ -152,64 +138,60 @@ for(let v = 0; v < grassBaseGeometry.attributes.position.array.length; v += 3){
 	grassBaseGeometry.attributes.position.array[v+2] = vertex.z;
 }
 
+// mesh básico para a folha
 grassBaseGeometry.computeFaceNormals();
 grassBaseGeometry.computeVertexNormals();
 var baseMaterial = new THREE.MeshNormalMaterial({side: THREE.DoubleSide});
 var baseBlade = new THREE.Mesh(grassBaseGeometry, baseMaterial);
-//Show grass base geometry
-//scene.add(baseBlade);
 
+// instanced geometry para cada folha a ser inserida
 var instancedGeometry = new THREE.InstancedBufferGeometry();
-
+// atributos da geometria
 instancedGeometry.index = grassBaseGeometry.index;
 instancedGeometry.attributes.position = grassBaseGeometry.attributes.position;
 instancedGeometry.attributes.uv = grassBaseGeometry.attributes.uv;
 instancedGeometry.attributes.normal = grassBaseGeometry.attributes.normal;
 
-// Each instance has its own data for position, orientation and scale
+// para cada folha definir um indice, tamanho, posição e orientação
 var indices = [];
 var offsets = [];
 var scales = [];
 var halfRootAngles = [];
 
-//For each instance of the grass blade
+// para cada folha da grama
 for (let i = 0; i < instances; i++){
-
 	indices.push(i/instances);
-
-  //Offset of the roots
-  /// TODO position here
+	// definir uma posição aleatória
 	x = -120 + Math.random()*750;
 	z = 473 + Math.random()*246;
-  //x = Math.random() * width - width/2;
-  //z = Math.random() * width - width/2;
   y = 0;
   offsets.push(x, y, z);
 
-	//Random orientation
+	// orientação aleatória
   let angle = Math.PI - Math.random() * (2 * Math.PI);
   halfRootAngles.push(Math.sin(0.5*angle), Math.cos(0.5*angle));
 
-  //Define variety in height
-  /// TODOset scale HERE
+  // definir tamanho da folha
   if(i % 3 != 0){
-  	scales.push(8.0+Math.random() * 1.25);
+  	scales.push(8.0+Math.random() * 2.0);
   }else{
     scales.push(8.0+Math.random());
   }
 }
 
+// informações geradas como atributos
 var offsetAttribute = new THREE.InstancedBufferAttribute(new Float32Array(offsets), 3);
 var scaleAttribute = new THREE.InstancedBufferAttribute(new Float32Array(scales), 1);
 var halfRootAngleAttribute = new THREE.InstancedBufferAttribute(new Float32Array(halfRootAngles), 2);
 var indexAttribute = new THREE.InstancedBufferAttribute(new Float32Array(indices), 1);
 
+//aplicando na instanced geometry
 instancedGeometry.setAttribute( 'offset', offsetAttribute);
 instancedGeometry.setAttribute( 'scale', scaleAttribute);
 instancedGeometry.setAttribute( 'halfRootAngle', halfRootAngleAttribute);
 instancedGeometry.setAttribute( 'index', indexAttribute);
 
-//Define the material, specifying attributes, uniforms, shaders etc.
+// definir o material, utilizar os uniforms para o shader
 var grassMaterial = new THREE.RawShaderMaterial( {
   uniforms: {
     time: {type: 'float', value: 0},
@@ -236,9 +218,9 @@ var grassMaterial = new THREE.RawShaderMaterial( {
   side: THREE.DoubleSide
 } );
 
+// construir o mesh completo e adicionar à cena
 var grass = new THREE.Mesh(instancedGeometry, grassMaterial);
 scene.add(grass);
-/////
 
 // Teto
 var objLoader = new THREE.OBJLoader();

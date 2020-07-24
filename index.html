@@ -16,6 +16,7 @@
 				<script src="https://unpkg.com/three@0.116.1/examples/js/controls/DragControls.js"></script>
 				<script src="https://unpkg.com/three@0.116.1/examples/js/loaders/OBJLoader.js"></script>
 				<script src="https://unpkg.com/three@0.116.1/examples/js/loaders/MTLLoader.js"></script>
+				<!-- Shaders baseados em https://al-ro.github.io/ -->
 				<script id="grassVertexSource" type="x-shader/x-vertex">
 					uniform sampler2D noiseTexture;
 					float getYPosition(vec2 p) {
@@ -51,17 +52,6 @@
 					  return 2.0 * cross(q.xyz, v * q.w + cross(q.xyz, v)) + v;
 					}
 
-					float placeOnSphere(vec3 v){
-					  float theta = acos(v.z/radius);
-					  float phi = acos(v.x/(radius * sin(theta)));
-					  float sV = radius * sin(theta) * sin(phi);
-					  //If undefined, set to default value
-					  if(sV != sV){
-					    sV = v.y;
-					  }
-					  return sV;
-					}
-
 					void main() {
 
 						//Vertex height in blade geometry
@@ -95,9 +85,6 @@
 
 						pos.x = globalPos.x - tile.x * width;
 						pos.z = globalPos.z - tile.z * width;
-
-						//pos.y = max(0.0, placeOnSphere(pos)) - radius;
-						//pos.y += getYPosition(vec2(pos.x+delta*posX, pos.z+delta*posZ));
 						pos.y = -112.0;
 
 						//Wind is sine waves in time
@@ -119,7 +106,6 @@
 						idx = index;
 
 					  gl_Position = projectionMatrix * modelViewMatrix * vec4(vPosition, 1.0);
-
 					}
 				</script>
 				<script id="grassFragmentSource" type="x-shader/x-vertex">
@@ -135,7 +121,6 @@
 					uniform float shininess;
 					uniform vec3 lightColour;
 					uniform vec3 sunDirection;
-
 
 					//Surface uniforms
 					uniform sampler2D map;
@@ -158,7 +143,6 @@
 					}
 
 					void main() {
-
 					  //If transparent, don't draw
 					  if(texture2D(alphaMap, vUv).r < 0.15){
 					    discard;
