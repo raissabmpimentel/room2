@@ -123,7 +123,7 @@ function init_clock() {
   });
 }
 
-// Inicializar drag control do relogio
+// Inicializar drag control do quadro
 function init_frame() {
   ctrl_frame = new THREE.DragControls(drag_frame, camera, renderer.domElement);
   ctrl_frame.transformGroup = true; //Para ser possível transportar varias geometrias
