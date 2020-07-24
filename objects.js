@@ -14,7 +14,7 @@ scene.background = new THREE.CubeTextureLoader()
 var texture;
 
 // Chao
-texture = new THREE.TextureLoader().load('img/carpet.jpg');
+texture = new THREE.TextureLoader().load('img/carpet-v1.jpg');
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set( 5, 5 );
@@ -33,7 +33,7 @@ objLoader.load('floor.obj', function(object) {
 
 // Chao do Jardim
 // definir e posicionar plano, analogo ao modelo garden-floor.obj
-var geometry = new THREE.PlaneGeometry( 750, 250, 32 );
+var geometry = new THREE.PlaneGeometry( 698, 250, 32 );
 var material = new THREE.MeshBasicMaterial( {color: 0x003000, side: THREE.DoubleSide} );
 var plane = new THREE.Mesh( geometry, material );
 plane.rotation.x = + Math.PI/2;
@@ -120,7 +120,7 @@ objLoader.load('garden-wall.obj', function(object) {
 // Moldura da janela
 var mat_frame = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
     roughness: 0.5,
-    metalness: 1,
+    metalness: 0.5,
     envMapIntensity: 3
 });
 var objLoader = new THREE.OBJLoader();
@@ -141,7 +141,8 @@ var mat_glass = new THREE.MeshPhysicalMaterial({
 	roughness: 0.34,
 	transparency: 0.9,
   opacity: 1,
-	transparent: true
+	transparent: true,
+	side: THREE.DoubleSide
 });
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
@@ -157,7 +158,7 @@ objLoader.load('window-glass.obj', function(object) {
 // Porta do jardim
 var mat_garden_frame = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
     roughness: 0.5,
-    metalness: 1,
+    metalness: 0.5,
     envMapIntensity: 3
 });
 var objLoader = new THREE.OBJLoader();
@@ -604,5 +605,3 @@ groupFrame.position.set(framePosition.x, framePosition.y, framePosition.z);
 groupFrame.rotateY(-Math.PI/2);
 scene.add(groupFrame);
 drag_frame.push(groupFrame); //Colocar na lista de objetos para o Drag Controls do quadro
-
-

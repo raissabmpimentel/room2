@@ -17,7 +17,7 @@ var resolution = 64;
 var delta = width/resolution;
 var azimuth = 0.4;
 var elevation = 0.2;
-var ambientStrength = 0.7;
+var ambientStrength = 0.5;
 var translucencyStrength = 1.5;
 var specularStrength = 0.5;
 var diffuseStrength = 1.5;
@@ -120,8 +120,8 @@ var halfRootAngles = [];
 for (let i = 0; i < instances; i++){
 	indices.push(i/instances);
 	// definir uma posição aleatória
-	x = -120 + Math.random()*750;
-	z = 473 + Math.random()*246;
+	x = -92.5 + Math.random()*698;
+	z = 473 + Math.random()*243.5;
   y = 0;
   offsets.push(x, y, z);
 
