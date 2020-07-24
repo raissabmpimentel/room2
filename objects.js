@@ -813,7 +813,7 @@ var depthFrame = 10;
 var loader = new THREE.TextureLoader();
 loader.load('img/wood.jpg', function ( texture ) {
   var frameGeometry = new THREE.BoxGeometry(lengthFrame, heightFrame, depthFrame);
-  var frameMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+  var frameMaterial = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5});
   var frame = new THREE.Mesh(frameGeometry, frameMaterial);
   frame.name = "quadro"; //Nome para identificar o quadro, a ser usado ao identificar a selecao
 	groupFrame.add(frame);
@@ -826,7 +826,7 @@ var depthPainting = depthFrame + 5;
 var loader = new THREE.TextureLoader();
 loader.load('img/vangogh.jpeg', function ( texture ) {
   var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
-  var paintingMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+  var paintingMaterial = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5});
   var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
 	painting.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthPainting - depthFrame);
 	groupFrame.add(painting);
