@@ -119,6 +119,8 @@ var INTERSECTED = null;
 // Lista dos nomes dos objetos que podem ser transportados
 var list_names = ["sofa 1","sofa 2","mesa"]; 
 
+var index = 0;
+
 // Verificar interseccoes com objetos que podem ser transportados
 function verify_intersec() {
 
@@ -133,26 +135,34 @@ function verify_intersec() {
     // Baseado em https://stackoverflow.com/questions/38314521/change-color-of-mesh-using-mouseover-in-three-js
     if ( intersects.length > 0 ) // Se ha interseccao
     {
-      if ( intersects[ 0 ].object != INTERSECTED ) // Se ha interseccao com um novo objeto
+      
+      if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2 ou mesa
       {
-          if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2 ou mesa
-          {
-            scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
-                if (child.name === INTERSECTED.name) {
-                    child.material = child.currentMat; 
-                }
-              });
-          }
-          INTERSECTED = intersects[0].object; // Atualizar objeto intersecctado
-          if(valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2 ou mesa
-          {
-            scene.traverse(function(child) { // Atualizar para material de cor rosa para todas as geometrias com mesmo nome do objeto intersecctado
-                if (child.name === INTERSECTED.name) {
-                    child.currentMat = child.material; // Guardar o material antigo em currentMat
-                    child.material = mat; 
-                }
-              });
-          }
+        scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
+            if (child.name === INTERSECTED.name) {
+                child.material = child.currentMat; 
+            }
+          });
+      }
+      index = 0;
+      for ( var i = 0; i < intersects.length; i++ ) {
+        /* Verificar o indice do objeto intersectado mais proximo, que pode ser o sofa 1, sofa 2 ou mesa.
+           Se nao achar, o indice eh do objeto mais proximo (zero) */
+        if(valueInArray(intersects[i].object.name,list_names)) // 
+        {
+            index = i;
+            break;
+        }
+      }
+      INTERSECTED = intersects[index].object; // Atualizar objeto intersecctado
+      if(valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2 ou mesa
+      {
+        scene.traverse(function(child) { // Atualizar para material de cor rosa para todas as geometrias com mesmo nome do objeto intersecctado
+            if (child.name === INTERSECTED.name) {
+                child.currentMat = child.material; // Guardar o material antigo em currentMat
+                child.material = mat; 
+            }
+          });
       }
     }
     else 
