@@ -14,7 +14,7 @@ scene.background = new THREE.CubeTextureLoader()
 var texture;
 
 // Chao
-texture = new THREE.TextureLoader().load('img/carpet.jpg');
+texture = new THREE.TextureLoader().load('img/carpet-v1.jpg');
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set( 5, 5 );
