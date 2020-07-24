@@ -120,7 +120,7 @@ objLoader.load('garden-wall.obj', function(object) {
 // Moldura da janela
 var mat_frame = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
     roughness: 0.5,
-    metalness: 1,
+    metalness: 0.5,
     envMapIntensity: 3
 });
 var objLoader = new THREE.OBJLoader();
