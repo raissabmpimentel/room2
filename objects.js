@@ -717,13 +717,13 @@ group.add(circle);
 
 var scale = 0.15;
 var clockPosition = {
-    x: 208,
+    x: -248,
     y: 50,
-    z: 10,
+    z: 160,
 }
 group.scale.set(scale, scale, scale);
 group.position.set(clockPosition.x, clockPosition.y, clockPosition.z);
-group.rotateY(-Math.PI/2);
+group.rotateY(Math.PI/2);
 
 // Molde da TV
 var mat_tv = new THREE.MeshPhysicalMaterial({color: 0x141414,
