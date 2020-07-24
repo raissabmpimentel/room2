@@ -716,13 +716,13 @@ group.add(circle);
 
 var scale = 0.15;
 var clockPosition = {
-    x: 208,
+    x: -218,
     y: 50,
-    z: 10,
+    z: 160,
 }
 group.scale.set(scale, scale, scale);
 group.position.set(clockPosition.x, clockPosition.y, clockPosition.z);
-group.rotateY(-Math.PI/2);
+group.rotateY(Math.PI/2);
 
 // Molde da TV
 var mat_tv = new THREE.MeshPhysicalMaterial({color: 0x141414,
@@ -847,6 +847,6 @@ loader.load('img/vangogh.jpeg', function ( texture ) {
 
 var scale = 0.7;
 groupFrame.scale.set(scale, scale, scale);
-groupFrame.position.set(208, 0, 100);
+groupFrame.position.set(208, 10, 50);
 groupFrame.rotateY(-Math.PI/2);
 scene.add(groupFrame);

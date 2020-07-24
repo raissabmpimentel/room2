@@ -6,7 +6,7 @@ function onMouseMove( event ) {
 	// Calcular a posicao do mouse de forma normalizada
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-    
+
   // Atualizar o raycaster com a posicao do mouse
   raycaster.setFromCamera( mouse, camera );
 }
@@ -15,8 +15,6 @@ window.addEventListener( 'mousemove', onMouseMove, false );
 
 var state_drag; // Variavel para dizer se esta ocorrendo drag de objetos
 var crtl_table, crtl_sofa_1, ctrl_sofa_2; // drag controls para a mesa, sofa 1 e sofa 2
-
-
 
 // Inicializar drag control do sofa 1
 function init_sofa_1() {
@@ -42,7 +40,7 @@ function init_sofa_1() {
       else if(event.object.position.z > 215)
         event.object.position.z = 215;
     });
-    
+
   }
 
 // Inicializar drag control do sofa 2
@@ -146,7 +144,7 @@ function valueInArray(value, vec) {
 // Guarda a geometria no qual o raycaster intersecta
 var INTERSECTED = null;
 // Lista dos nomes dos objetos que podem ser transportados
-var list_names = ["sofa 1","sofa 2","mesa","relogio"]; 
+var list_names = ["sofa 1","sofa 2","mesa","relogio"];
 
 var index = 0;
 
@@ -155,7 +153,7 @@ function verify_intersec() {
 
 	// Objetos da cena que o raycaster instersecta
   var intersects = raycaster.intersectObjects(scene.children, true);
-  
+
   // Material de cor rosa a ser aplicado quando o mouse intersecta os objetos que podem ser transportados
   var mat = new THREE.MeshLambertMaterial({color: 0xffa1a1});
 
@@ -164,12 +162,12 @@ function verify_intersec() {
     // Baseado em https://stackoverflow.com/questions/38314521/change-color-of-mesh-using-mouseover-in-three-js
     if ( intersects.length > 0 ) // Se ha interseccao
     {
-      
+
       if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa ou relogio
       {
         scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
             if (child.name === INTERSECTED.name) {
-                child.material = child.currentMat; 
+                child.material = child.currentMat;
             }
           });
       }
@@ -177,7 +175,7 @@ function verify_intersec() {
       for ( var i = 0; i < intersects.length; i++ ) {
         /* Verificar o indice do objeto intersectado mais proximo, que pode ser o sofa 1, sofa 2, mesa ou relogio
            Se nao achar, o indice eh do objeto mais proximo (zero) */
-        if(valueInArray(intersects[i].object.name,list_names)) // 
+        if(valueInArray(intersects[i].object.name,list_names)) //
         {
             index = i;
             break;
@@ -189,23 +187,22 @@ function verify_intersec() {
         scene.traverse(function(child) { // Atualizar para material de cor rosa para todas as geometrias com mesmo nome do objeto intersecctado
             if (child.name === INTERSECTED.name) {
                 child.currentMat = child.material; // Guardar o material antigo em currentMat
-                child.material = mat; 
+                child.material = mat;
             }
           });
       }
     }
-    else 
+    else
     {
       if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa ou relogio
       {
         scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
             if (child.name === INTERSECTED.name) {
-              child.material = child.currentMat; 
+              child.material = child.currentMat;
             }
           });
-      } 
+      }
       INTERSECTED = null;
     }
   }
 }
-
