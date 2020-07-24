@@ -98,7 +98,7 @@ function init_table() {
 
 }
 
-// Inicializar drag control do sofa 2
+// Inicializar drag control do relogio
 function init_clock() {
   ctrl_clock = new THREE.DragControls(drag_clock, camera, renderer.domElement);
   ctrl_clock.transformGroup = true; //Para ser possível transportar varias geometrias
