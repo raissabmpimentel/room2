@@ -2,15 +2,18 @@
 var listener;
 listener = new THREE.AudioListener();
 
-var soundVideo = new THREE.PositionalAudio(listener);
+var noiseMaxVolume = 0.01;
+var videoMaxVolume = 0.8;
+
+var soundVideo = new THREE.Audio(listener);
 soundVideo.load('res/samara.mp4');
 
-var soundNoise = new THREE.PositionalAudio(listener);
+var soundNoise = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
 audioLoader.load( 'res/tvnoise.mp4', function( buffer ) {
 	soundNoise.setBuffer( buffer );
   soundNoise.setLoop( true );
-	soundNoise.setVolume( 0.15 );
+	soundNoise.setVolume( noiseMaxVolume );
 	soundNoise.play();
 });
 
@@ -32,7 +35,7 @@ function render(time) {
 		if(noise == false){
 			uniformsNoise.u_time.value = timeAnim;
 
-			soundNoise.setVolume(0.15*(soundParams.mute == true ? 0 : 1)*(soundParams.volume/100));
+			soundNoise.setVolume(noiseMaxVolume*(soundParams.mute == true ? 0 : 1)*(soundParams.volume/100));
 			soundVideo.setVolume(0.0);
 
 			scene.remove(meshVideo);
@@ -42,7 +45,7 @@ function render(time) {
 		} else{
 			uniformsVideo.u_time.value = timeAnim;
 
-			soundVideo.setVolume(1.0*(soundParams.mute == true ? 0 : 1)*(soundParams.volume/100));
+			soundVideo.setVolume(videoMaxVolume*(soundParams.mute == true ? 0 : 1)*(soundParams.volume/100));
 			soundNoise.setVolume(0.0);
 			soundVideo.play();
 			video.play();

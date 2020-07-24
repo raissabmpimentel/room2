@@ -16,18 +16,18 @@ function onToggleMute() {
     soundVideo.setVolume(0.0);
   } else {
     if(noise == true){
-      soundNoise.setVolume(0.15*(soundParams.volume/100));
+      soundNoise.setVolume(noiseMaxVolume*(soundParams.volume/100));
     } else {
-      soundVideo.setVolume(1.0*(soundParams.volume/100));
+      soundVideo.setVolume(videoMaxVolume*(soundParams.volume/100));
     }
   }
 }
 
 function onVolumeChange() {
 	if(noise == true){
-    soundNoise.setVolume(0.15*(soundParams.mute == true ? 0.0 : 1.0)*(soundParams.volume/100));
+    soundNoise.setVolume(noiseMaxVolume*(soundParams.mute == true ? 0.0 : 1.0)*(soundParams.volume/100));
   } else {
-    soundVideo.setVolume(1.0*(soundParams.mute == true ? 0.0 : 1.0)*(soundParams.volume/100));
+    soundVideo.setVolume(videoMaxVolume*(soundParams.mute == true ? 0.0 : 1.0)*(soundParams.volume/100));
   }
 }
 
@@ -163,11 +163,46 @@ f7.add(paintingParams, 'painting', {
 function onPaintingChange() {
   paintingName = paintingParams.painting;
   var loader = new THREE.TextureLoader();
-  loader.setPath('painting/').load(paintingName, function ( texture ) {
+  loader.setPath('img/painting/').load(paintingName, function ( texture ) {
     var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
     var paintingMaterial = new THREE.MeshLambertMaterial({map: texture});
     var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
   	painting.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthPainting - depthFrame);
   	groupFrame.add(painting);
   });
+};
+
+// Carpet controllers
+var carpetParams = {
+	carpet: 'carpet-v1.jpg'
+};
+
+var f8 = gui.addFolder('Floor');
+f8.add(carpetParams, 'carpet', {
+  LightGray: 'carpet-v1.jpg',
+	Gray: 'carpet-v4.jpg',
+  DarkGray: 'carpet-v3.jpg',
+	Beige: 'carpet-v2.jpg',
+	DarkWood: 'wood.jpg',
+	LightWood:'light-wood.jpg'
+} ).onChange(onCarpetChange);
+
+function onCarpetChange() {
+ carpetName = carpetParams.carpet;
+	texture = new THREE.TextureLoader().setPath('img/carpet/').load(carpetName);
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.wrapT = THREE.RepeatWrapping;
+	texture.repeat.set( 5, 5 );
+	texture.anisotropy = 16;
+	mat_fl = new THREE.MeshLambertMaterial({map: texture, color: 0xffffff});
+	objLoader = new THREE.OBJLoader();
+	objLoader.setPath('obj/');
+	objLoader.load('floor.obj', function(object) {
+			object.traverse(function(child) {
+	        if (child instanceof THREE.Mesh){
+	            child.material = mat_fl;
+	        }
+	    });
+			scene.add(object);
+	});
 };

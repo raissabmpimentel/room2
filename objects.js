@@ -14,7 +14,8 @@ scene.background = new THREE.CubeTextureLoader()
 var texture;
 
 // Chao
-texture = new THREE.TextureLoader().load('img/carpet-v1.jpg');
+var carpetName = 'carpet-v1.jpg';
+texture = new THREE.TextureLoader().setPath('img/carpet/').load(carpetName);
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set( 5, 5 );
@@ -586,7 +587,7 @@ var depthPainting = depthFrame + 5;
 
 var paintingName = 'the_starry_night.jpeg';
 var loader = new THREE.TextureLoader();
-loader.setPath('painting/').load(paintingName, function ( texture ) {
+loader.setPath('img/painting/').load(paintingName, function ( texture ) {
   var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
   var paintingMaterial = new THREE.MeshLambertMaterial({map: texture});
   var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
@@ -597,8 +598,8 @@ loader.setPath('painting/').load(paintingName, function ( texture ) {
 var scale = 0.7;
 framePosition = {
     x: 208,
-    y: 0,
-    z: 100,
+    y: 10,
+    z: 50,
 }
 groupFrame.scale.set(scale, scale, scale);
 groupFrame.position.set(framePosition.x, framePosition.y, framePosition.z);
