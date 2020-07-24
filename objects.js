@@ -501,13 +501,13 @@ var drag_sofa_1 = [];
 var drag_sofa_2 = [];
 
 // Mesa central
-var mat_wood_2 = new THREE.MeshLambertMaterial({color: 0x96653A});
+var mat_table = new THREE.MeshLambertMaterial({color: 0x96653A});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
 objLoader.load('table.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
-            child.material = mat_wood_2;
+            child.material = mat_table;
             child.name = "mesa"; //Nome para identificar a mesa, a ser usado ao identificar a selecao
         }
     });
@@ -516,13 +516,13 @@ objLoader.load('table.obj', function(object) {
 })
 
 // Sofa 1
-var mat_sofa = new THREE.MeshLambertMaterial({color: 0x8c8c97});
+var mat_sofa_1 = new THREE.MeshLambertMaterial({color: 0x8c8c97});
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
 objLoader.load('sofa1.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
+            child.material = mat_sofa_1;
             child.name = "sofa 1"; //Nome para identificar o sofa 1, a ser usado ao identificar a selecao
 
         }
@@ -532,11 +532,12 @@ objLoader.load('sofa1.obj', function(object) {
 })
 
 // Sofa 2
+var mat_sofa_2 = new THREE.MeshLambertMaterial({color: 0x8c8c97});
 objLoader.setPath('obj/');
 objLoader.load('sofa2.obj', function(object) {
 	object.traverse(function(child) {
         if (child instanceof THREE.Mesh){
-            child.material = mat_sofa;
+            child.material = mat_sofa_2;
             child.name = "sofa 2"; //Nome para identificar o sofa 2, a ser usado ao identificar a selecao
         }
     });
@@ -791,6 +792,9 @@ function randomizeParams() {
 	uniformsVideo.u_amount.value = Math.random() * 100;
 	uniformsNoise.u_amount.value = 400 + Math.random()*(1000 - 400);
 }
+
+var cloudParticles = [];
+
 
 
 // Funcao para ajustar parametros da cena com o redimensionamento

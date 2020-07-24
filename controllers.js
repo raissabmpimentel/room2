@@ -58,7 +58,6 @@ function onVolumeChange() {
 
 
 // Clock controllers
-
 var clockColorParams = {
 	clock: "#FFFFFF",
 	clockWrapper: "#000000",
@@ -94,4 +93,52 @@ function onHandSecondColorChange() {
 
 function onLineColorChange() {
 	materials.line.color.setHex(clockColorParams.line.replace('#', '0x'));
+};
+
+// Sofa controllers
+var sofasParams = {
+	left: "#8c8c97",
+  right: "#8c8c97"
+};
+
+var f4 = gui.addFolder('Sofas');
+f4.addColor(sofasParams, 'left').onChange(onSofaLeftColorChange);
+f4.addColor(sofasParams, 'right').onChange(onSofaRightColorChange);
+
+function onSofaLeftColorChange() {
+	mat_sofa_1.color.setHex(sofasParams.left.replace('#', '0x'));
+};
+
+function onSofaRightColorChange() {
+	mat_sofa_2.color.setHex(sofasParams.right.replace('#', '0x'));
+};
+
+// Mesa controllers
+var tableParams = {
+	color: "#96653A"
+};
+
+var f5 = gui.addFolder('Table');
+f5.addColor(tableParams, 'color').onChange(onTableColorChange);
+
+function onTableColorChange() {
+	mat_table.color.setHex(tableParams.color.replace('#', '0x'));
+};
+
+// Door controllers
+var doorParams = {
+	door: "#ffffff",
+  doorFrame: "#e1e1e1"
+};
+
+var f6 = gui.addFolder('Door');
+f6.addColor(doorParams, 'door').onChange(onDoorColorChange);
+f6.addColor(doorParams, 'doorFrame').onChange(onDoorFrameColorChange);
+
+function onDoorColorChange() {
+	mat_door.color.setHex(doorParams.door.replace('#', '0x'));
+};
+
+function onDoorFrameColorChange() {
+	mat_door_frame.color.setHex(doorParams.doorFrame.replace('#', '0x'));
 };
