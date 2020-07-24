@@ -500,6 +500,7 @@ var drag_table = [];
 var drag_sofa_1 = [];
 var drag_sofa_2 = [];
 var drag_clock = [];
+var drag_frame = [];
 
 // Mesa central
 var mat_table = new THREE.MeshLambertMaterial({color: 0x96653A});
@@ -802,22 +803,7 @@ function randomizeParams() {
 	uniformsNoise.u_amount.value = 400 + Math.random()*(1000 - 400);
 }
 
-var cloudParticles = [];
-
-// Funcao para ajustar parametros da cena com o redimensionamento
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      uniformsVideo.u_resolution.value.x = renderer.domElement.width;
-      uniformsVideo.u_resolution.value.y = renderer.domElement.height;
-      uniformsNoise.u_resolution.value.x = renderer.domElement.width;
-      uniformsNoise.u_resolution.value.y = renderer.domElement.height;
-}
-
-window.addEventListener('resize', onWindowResize, false);
-
-
+// Quadro
 var groupFrame = new THREE.Group();
 
 var lengthFrame = 200;
@@ -829,6 +815,7 @@ loader.load('img/wood.jpg', function ( texture ) {
   var frameGeometry = new THREE.BoxGeometry(lengthFrame, heightFrame, depthFrame);
   var frameMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
   var frame = new THREE.Mesh(frameGeometry, frameMaterial);
+  frame.name = "quadro"; //Nome para identificar o quadro, a ser usado ao identificar a selecao
 	groupFrame.add(frame);
 });
 
@@ -846,7 +833,26 @@ loader.load('img/vangogh.jpeg', function ( texture ) {
 });
 
 var scale = 0.7;
+framePosition = {
+    x: 208,
+    y: 0,
+    z: 100,
+}
 groupFrame.scale.set(scale, scale, scale);
-groupFrame.position.set(208, 0, 100);
+groupFrame.position.set(framePosition.x, framePosition.y, framePosition.z);
 groupFrame.rotateY(-Math.PI/2);
 scene.add(groupFrame);
+drag_frame.push(groupFrame);
+
+// Funcao para ajustar parametros da cena com o redimensionamento
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      uniformsVideo.u_resolution.value.x = renderer.domElement.width;
+      uniformsVideo.u_resolution.value.y = renderer.domElement.height;
+      uniformsNoise.u_resolution.value.x = renderer.domElement.width;
+      uniformsNoise.u_resolution.value.y = renderer.domElement.height;
+}
+
+window.addEventListener('resize', onWindowResize, false);
