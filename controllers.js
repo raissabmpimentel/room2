@@ -144,3 +144,30 @@ function onDoorColorChange() {
 function onDoorFrameColorChange() {
 	mat_door_frame.color.setHex(doorParams.doorFrame.replace('#', '0x'));
 };
+
+// Painting controllers
+var paintingParams = {
+	painting: 'the_starry_night.jpeg'
+};
+
+var f7 = gui.addFolder('Painting');
+f7.add(paintingParams, 'painting', {
+  TheStarryNight: 'the_starry_night.jpeg',
+  Guernica: 'guernica.jpg',
+  ImpressionSunrise: 'impression_sunrise.jpg',
+  Sea: 'sea.jpg',
+  Abstract1: 'abstract_1.jpg',
+  Abstract2: 'abstract_2.jpg'
+} ).onChange(onPaintingChange);
+
+function onPaintingChange() {
+  paintingName = paintingParams.painting;
+  var loader = new THREE.TextureLoader();
+  loader.setPath('painting/').load(paintingName, function ( texture ) {
+    var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
+    var paintingMaterial = new THREE.MeshBasicMaterial({map: texture});
+    var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
+  	painting.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthPainting - depthFrame);
+  	groupFrame.add(painting);
+  });
+};

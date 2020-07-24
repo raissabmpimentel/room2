@@ -592,49 +592,49 @@ var materials = {
 		{
 			color: 0x000000,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	),
 	clock: new THREE.MeshPhongMaterial(
 		{
 			color: 0xFFFFFF,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	),
 	line: new THREE.MeshPhongMaterial(
 		{
 			color: 0x000000,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	),
 	handHour: new THREE.MeshPhongMaterial(
 		{
 			color: 0x000000,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	),
 	handMinute: new THREE.MeshPhongMaterial(
 		{
 			color: 0x000000,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	),
 	handSecond: new THREE.MeshPhongMaterial(
 		{
 			color: 0xFF0000,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	),
 	handSecondCircle: new THREE.MeshPhongMaterial(
 		{
 			color: 0xFF0000,
 			shininess: 10,
-			shading: THREE.FlatShading
+			flatShading: THREE.FlatShading
 		}
 	)
 };
@@ -813,7 +813,7 @@ var depthFrame = 10;
 var loader = new THREE.TextureLoader();
 loader.load('img/wood.jpg', function ( texture ) {
   var frameGeometry = new THREE.BoxGeometry(lengthFrame, heightFrame, depthFrame);
-  var frameMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+  var frameMaterial = new THREE.MeshBasicMaterial({map: texture});
   var frame = new THREE.Mesh(frameGeometry, frameMaterial);
   frame.name = "quadro"; //Nome para identificar o quadro, a ser usado ao identificar a selecao
 	groupFrame.add(frame);
@@ -823,10 +823,11 @@ var lengthPainting = lengthFrame - 20;
 var heightPainting = heightFrame - 20;
 var depthPainting = depthFrame + 5;
 
+var paintingName = 'the_starry_night.jpeg';
 var loader = new THREE.TextureLoader();
-loader.load('img/vangogh.jpeg', function ( texture ) {
+loader.setPath('painting/').load(paintingName, function ( texture ) {
   var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
-  var paintingMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+  var paintingMaterial = new THREE.MeshBasicMaterial({map: texture});
   var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
 	painting.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthPainting - depthFrame);
 	groupFrame.add(painting);
