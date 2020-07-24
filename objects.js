@@ -795,8 +795,6 @@ function randomizeParams() {
 
 var cloudParticles = [];
 
-
-
 // Funcao para ajustar parametros da cena com o redimensionamento
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -806,6 +804,40 @@ function onWindowResize() {
       uniformsVideo.u_resolution.value.y = renderer.domElement.height;
       uniformsNoise.u_resolution.value.x = renderer.domElement.width;
       uniformsNoise.u_resolution.value.y = renderer.domElement.height;
-  }
+}
 
-  window.addEventListener('resize', onWindowResize, false);
+window.addEventListener('resize', onWindowResize, false);
+
+
+var groupFrame = new THREE.Group();
+
+var lengthFrame = 200;
+var heightFrame = 150;
+var depthFrame = 10;
+
+var loader = new THREE.TextureLoader();
+loader.load('img/wood.jpg', function ( texture ) {
+  var frameGeometry = new THREE.BoxGeometry(lengthFrame, heightFrame, depthFrame);
+  var frameMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+  var frame = new THREE.Mesh(frameGeometry, frameMaterial);
+	groupFrame.add(frame);
+});
+
+var lengthPainting = lengthFrame - 20;
+var heightPainting = heightFrame - 20;
+var depthPainting = depthFrame + 5;
+
+var loader = new THREE.TextureLoader();
+loader.load('img/vangogh.jpeg', function ( texture ) {
+  var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
+  var paintingMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+  var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
+	painting.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthPainting - depthFrame);
+	groupFrame.add(painting);
+});
+
+var scale = 0.7;
+groupFrame.scale.set(scale, scale, scale);
+groupFrame.position.set(208, 0, 100);
+groupFrame.rotateY(-Math.PI/2);
+scene.add(groupFrame);
