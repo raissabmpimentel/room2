@@ -716,7 +716,7 @@ group.add(circle);
 
 var scale = 0.15;
 var clockPosition = {
-    x: -218,
+    x: -248,
     y: 50,
     z: 160,
 }
