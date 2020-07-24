@@ -114,11 +114,38 @@ function init_clock() {
     // Impedir movimento nos eixos x e y
     event.object.position.y = clockPosition.y;
     event.object.position.x = clockPosition.x;
+    
     // Impedir colisao com itens dentro do quarto
-    if(event.object.position.z < -190)
-      event.object.position.z = -190;
+    if(event.object.position.z < 37)
+      event.object.position.z = 37;
     else if(event.object.position.z > 289)
       event.object.position.z = 289;
+  });
+}
+
+// Inicializar drag control do relogio
+function init_frame() {
+  ctrl_frame = new THREE.DragControls(drag_frame, camera, renderer.domElement);
+  ctrl_frame.transformGroup = true; //Para ser possível transportar varias geometrias
+  // Desabilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
+  ctrl_frame.addEventListener('dragstart', function(event) {
+    controls.enabled = false;
+    state_drag = true;
+  });
+  // Habilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
+  ctrl_frame.addEventListener('dragend', function(event) {
+    controls.enabled = true;
+    state_drag = false;
+  });
+  ctrl_frame.addEventListener('drag', function(event) {
+    // Impedir movimento nos eixos x e y
+    event.object.position.y = framePosition.y;
+    event.object.position.x = framePosition.x;
+    // Impedir colisao com itens dentro do quarto
+    if(event.object.position.z < -135)
+      event.object.position.z = -135;
+    else if(event.object.position.z > 233)
+      event.object.position.z = 233;
   });
 }
 
@@ -127,6 +154,7 @@ init_table();
 init_sofa_1();
 init_sofa_2();
 init_clock();
+init_frame();
 
 // Funcao auxiliar para verificar se o valor value está no vetor vec
 function valueInArray(value, vec) {
@@ -144,7 +172,7 @@ function valueInArray(value, vec) {
 // Guarda a geometria no qual o raycaster intersecta
 var INTERSECTED = null;
 // Lista dos nomes dos objetos que podem ser transportados
-var list_names = ["sofa 1","sofa 2","mesa","relogio"];
+var list_names = ["sofa 1","sofa 2","mesa","relogio","quadro"]; 
 
 var index = 0;
 
@@ -162,8 +190,8 @@ function verify_intersec() {
     // Baseado em https://stackoverflow.com/questions/38314521/change-color-of-mesh-using-mouseover-in-three-js
     if ( intersects.length > 0 ) // Se ha interseccao
     {
-
-      if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa ou relogio
+      
+      if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa, relogio ou quadro
       {
         scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
             if (child.name === INTERSECTED.name) {
@@ -173,7 +201,7 @@ function verify_intersec() {
       }
       index = 0;
       for ( var i = 0; i < intersects.length; i++ ) {
-        /* Verificar o indice do objeto intersectado mais proximo, que pode ser o sofa 1, sofa 2, mesa ou relogio
+        /* Verificar o indice do objeto intersectado mais proximo, que pode ser o sofa 1, sofa 2, mesa, relogio ou quadro
            Se nao achar, o indice eh do objeto mais proximo (zero) */
         if(valueInArray(intersects[i].object.name,list_names)) //
         {
@@ -182,7 +210,7 @@ function verify_intersec() {
         }
       }
       INTERSECTED = intersects[index].object; // Atualizar objeto intersecctado
-      if(valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa ou relogio
+      if(valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa, relogio ou quadro
       {
         scene.traverse(function(child) { // Atualizar para material de cor rosa para todas as geometrias com mesmo nome do objeto intersecctado
             if (child.name === INTERSECTED.name) {
