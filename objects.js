@@ -499,6 +499,7 @@ var objLoader = new THREE.OBJLoader();
 var drag_table = [];
 var drag_sofa_1 = [];
 var drag_sofa_2 = [];
+var drag_clock = [];
 
 // Mesa central
 var mat_table = new THREE.MeshLambertMaterial({color: 0x96653A});
@@ -583,6 +584,7 @@ var mat_sup = new THREE.MeshPhongMaterial({
 // Relogio
 var group = new THREE.Group();
 scene.add(group);
+drag_clock.push(group);
 
 var materials = {
 	clockWrapper: new THREE.MeshPhongMaterial(
@@ -641,6 +643,7 @@ var depthWrapper = 10;
 var clockWrapperGeometry = new THREE.CylinderGeometry(bigRadius, bigRadius, depthWrapper, 360)
 var clockWrapper = new THREE.Mesh(clockWrapperGeometry, materials.clockWrapper);
 clockWrapper.translateZ(0);
+clockWrapper.name = "relogio"; //Nome para identificar o relogio, a ser usado ao identificar a selecao
 clockWrapper.rotateX(Math.PI / 2);
 group.add(clockWrapper);
 
@@ -650,6 +653,7 @@ var clockGeometry = new THREE.CylinderGeometry(radius, radius, depthFace, 360)
 var clock = new THREE.Mesh(clockGeometry, materials.clock);
 clock.translateZ(0);
 clock.rotateX(Math.PI / 2);
+clock.name = "relogio"; //Nome para identificar o relogio, a ser usado ao identificar a selecao
 group.add(clock);
 
 var spacing = 5;
@@ -664,7 +668,7 @@ for (var i = 0; i < 60; i += 5) {
 	lineParent.rotateZ(lineAngle);
 	lineGeometry = new THREE.BoxGeometry(lineWidth, lineLength, 1);
 
-	line = new THREE.Mesh(lineGeometry, materials.line);
+    line = new THREE.Mesh(lineGeometry, materials.line);
 	line.translateOnAxis(new THREE.Vector3(0, 1, 0), radius - lineLength/2 - spacing);
 	line.translateOnAxis(new THREE.Vector3(0, 0, 1), depthFace/2 );
 
@@ -711,8 +715,13 @@ circle.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthFace/2 + 5 );
 group.add(circle);
 
 var scale = 0.15;
+var clockPosition = {
+    x: 208,
+    y: 50,
+    z: 10,
+}
 group.scale.set(scale, scale, scale);
-group.position.set(208, 50, 10);
+group.position.set(clockPosition.x, clockPosition.y, clockPosition.z);
 group.rotateY(-Math.PI/2);
 
 // Molde da TV
