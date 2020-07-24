@@ -165,7 +165,7 @@ function onPaintingChange() {
   var loader = new THREE.TextureLoader();
   loader.setPath('painting/').load(paintingName, function ( texture ) {
     var paintingGeometry = new THREE.BoxGeometry(lengthPainting, heightPainting, depthPainting);
-    var paintingMaterial = new THREE.MeshBasicMaterial({map: texture});
+    var paintingMaterial = new THREE.MeshLambertMaterial({map: texture});
     var painting = new THREE.Mesh(paintingGeometry, paintingMaterial);
   	painting.translateOnAxis(new THREE.Vector3( 0, 0, 1 ), depthPainting - depthFrame);
   	groupFrame.add(painting);
