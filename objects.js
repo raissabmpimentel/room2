@@ -33,7 +33,7 @@ objLoader.load('floor.obj', function(object) {
 
 // Chao do Jardim
 // definir e posicionar plano, analogo ao modelo garden-floor.obj
-var geometry = new THREE.PlaneGeometry( 750, 250, 32 );
+var geometry = new THREE.PlaneGeometry( 698, 250, 32 );
 var material = new THREE.MeshBasicMaterial( {color: 0x003000, side: THREE.DoubleSide} );
 var plane = new THREE.Mesh( geometry, material );
 plane.rotation.x = + Math.PI/2;
@@ -59,7 +59,7 @@ var resolution = 64;
 var delta = width/resolution;
 var azimuth = 0.4;
 var elevation = 0.2;
-var ambientStrength = 0.7;
+var ambientStrength = 0.2;
 var translucencyStrength = 1.5;
 var specularStrength = 0.5;
 var diffuseStrength = 1.5;
@@ -162,8 +162,8 @@ var halfRootAngles = [];
 for (let i = 0; i < instances; i++){
 	indices.push(i/instances);
 	// definir uma posição aleatória
-	x = -120 + Math.random()*750;
-	z = 473 + Math.random()*246;
+	x = -92.5 + Math.random()*697;
+	z = 473 + Math.random()*243.5;
   y = 0;
   offsets.push(x, y, z);
 
@@ -323,7 +323,8 @@ var mat_glass = new THREE.MeshPhysicalMaterial({
 	roughness: 0.34,
 	transparency: 0.9,
   opacity: 1,
-	transparent: true
+	transparent: true,
+	side: THREE.DoubleSide
 });
 var objLoader = new THREE.OBJLoader();
 objLoader.setPath('obj/');
@@ -339,7 +340,7 @@ objLoader.load('window-glass.obj', function(object) {
 // Porta do jardim
 var mat_garden_frame = new THREE.MeshStandardMaterial({color: 0x9c9c9c,
     roughness: 0.5,
-    metalness: 1,
+    metalness: 0.5,
     envMapIntensity: 3
 });
 var objLoader = new THREE.OBJLoader();
