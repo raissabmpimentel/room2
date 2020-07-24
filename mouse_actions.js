@@ -13,13 +13,13 @@ function onMouseMove( event ) {
 // Adicionar funcao para ser executada ao mover o mouse
 window.addEventListener( 'mousemove', onMouseMove, false );
 
-var state_drag; // Variavel para dizer se esta ocorrendo drag de objetos
-var crtl_table, crtl_sofa_1, ctrl_sofa_2; // drag controls para a mesa, sofa 1 e sofa 2
+var state_drag = false; // Variavel para dizer se esta ocorrendo drag de objetos
+var crtl_table, crtl_sofa_1, ctrl_sofa_2, ctrl_frame, ctrl_clock; // drag controls para a mesa, sofa 1 e sofa 2, quadro e relogio
 
 // Inicializar drag control do sofa 1
 function init_sofa_1() {
     ctrl_sofa_1 = new THREE.DragControls(drag_sofa_1, camera, renderer.domElement);
-    ctrl_sofa_1.transformGroup = true; //Para ser possivel transportar varias geometrias
+    ctrl_sofa_1.transformGroup = true; //Para ser possivel transportar um conjunto de objetos
     // Desabilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
     ctrl_sofa_1.addEventListener('dragstart', function(event) {
       controls.enabled = false;
@@ -46,7 +46,7 @@ function init_sofa_1() {
 // Inicializar drag control do sofa 2
 function init_sofa_2() {
   ctrl_sofa_2 = new THREE.DragControls(drag_sofa_2, camera, renderer.domElement);
-  ctrl_sofa_2.transformGroup = true; //Para ser possível transportar varias geometrias
+  ctrl_sofa_2.transformGroup = true; //Para ser possivel transportar um conjunto de objetos
   // Desabilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
   ctrl_sofa_2.addEventListener('dragstart', function(event) {
     controls.enabled = false;
@@ -72,7 +72,7 @@ function init_sofa_2() {
 // Inicializar drag control da mesa
 function init_table() {
   crtl_table = new THREE.DragControls(drag_table, camera, renderer.domElement);
-  crtl_table.transformGroup = true; //Para ser possivel transportar varias geometrias
+  crtl_table.transformGroup = true; //Para ser possivel transportar um conjunto de objetos
   // Desabilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
   crtl_table.addEventListener('dragstart', function(event) {
     controls.enabled = false;
@@ -99,7 +99,7 @@ function init_table() {
 // Inicializar drag control do relogio
 function init_clock() {
   ctrl_clock = new THREE.DragControls(drag_clock, camera, renderer.domElement);
-  ctrl_clock.transformGroup = true; //Para ser possível transportar varias geometrias
+  ctrl_clock.transformGroup = true; //Para ser possivel transportar um conjunto de objetos
   // Desabilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
   ctrl_clock.addEventListener('dragstart', function(event) {
     controls.enabled = false;
@@ -123,10 +123,10 @@ function init_clock() {
   });
 }
 
-// Inicializar drag control do relogio
+// Inicializar drag control do quadro
 function init_frame() {
   ctrl_frame = new THREE.DragControls(drag_frame, camera, renderer.domElement);
-  ctrl_frame.transformGroup = true; //Para ser possível transportar varias geometrias
+  ctrl_frame.transformGroup = true; //Para ser possivel transportar um conjunto de objetos
   // Desabilitar OrbitControls quando se inicia o drag, e atualizar variavel state_drag
   ctrl_frame.addEventListener('dragstart', function(event) {
     controls.enabled = false;
@@ -169,12 +169,13 @@ function valueInArray(value, vec) {
     return result;
 }
 
-// Guarda a geometria no qual o raycaster intersecta
+// Guarda o objeto no qual o raycaster intersecta
 var INTERSECTED = null;
 // Lista dos nomes dos objetos que podem ser transportados
 var list_names = ["sofa 1","sofa 2","mesa","relogio","quadro"]; 
 
-var index = 0;
+// Material de cor rosa a ser aplicado quando o mouse intersecta os objetos que podem ser transportados
+var mat = new THREE.MeshLambertMaterial({color: 0xffa1a1});
 
 // Verificar interseccoes com objetos que podem ser transportados
 function verify_intersec() {
@@ -182,24 +183,20 @@ function verify_intersec() {
 	// Objetos da cena que o raycaster instersecta
   var intersects = raycaster.intersectObjects(scene.children, true);
 
-  // Material de cor rosa a ser aplicado quando o mouse intersecta os objetos que podem ser transportados
-  var mat = new THREE.MeshLambertMaterial({color: 0xffa1a1});
-
   if (!state_drag) // Enquanto o estado nao eh de drag
   {
     // Baseado em https://stackoverflow.com/questions/38314521/change-color-of-mesh-using-mouseover-in-three-js
+    if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa, relogio ou quadro
+    {
+      scene.traverse(function(child) { // Restaurar o material antigo para todas os objetos com mesmo nome do objeto intersecctado
+          if (child.name === INTERSECTED.name) {
+              child.material = child.currentMat;
+          }
+        });
+    }
     if ( intersects.length > 0 ) // Se ha interseccao
     {
-      
-      if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa, relogio ou quadro
-      {
-        scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
-            if (child.name === INTERSECTED.name) {
-                child.material = child.currentMat;
-            }
-          });
-      }
-      index = 0;
+      var index = 0;
       for ( var i = 0; i < intersects.length; i++ ) {
         /* Verificar o indice do objeto intersectado mais proximo, que pode ser o sofa 1, sofa 2, mesa, relogio ou quadro
            Se nao achar, o indice eh do objeto mais proximo (zero) */
@@ -212,7 +209,7 @@ function verify_intersec() {
       INTERSECTED = intersects[index].object; // Atualizar objeto intersecctado
       if(valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa, relogio ou quadro
       {
-        scene.traverse(function(child) { // Atualizar para material de cor rosa para todas as geometrias com mesmo nome do objeto intersecctado
+        scene.traverse(function(child) { // Atualizar para material de cor rosa para todas os objetos com mesmo nome do objeto intersecctado
             if (child.name === INTERSECTED.name) {
                 child.currentMat = child.material; // Guardar o material antigo em currentMat
                 child.material = mat;
@@ -221,16 +218,6 @@ function verify_intersec() {
       }
     }
     else
-    {
-      if ( INTERSECTED && valueInArray(INTERSECTED.name,list_names)) // Se o objeto intersecctado for o sofa 1, sofa 2, mesa ou relogio
-      {
-        scene.traverse(function(child) { // Restaurar o material antigo para todas as geometrias com mesmo nome do objeto intersecctado
-            if (child.name === INTERSECTED.name) {
-              child.material = child.currentMat;
-            }
-          });
-      }
-      INTERSECTED = null;
-    }
+      INTERSECTED = null; // Restaura o valor inicial do objeto intersecctado
   }
 }
