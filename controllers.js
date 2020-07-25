@@ -115,7 +115,7 @@ function onSofaRightColorChange() {
 	mat_sofa_2.color.setHex(sofasParams.right.replace('#', '0x'));
 };
 
-// Mesa controllers
+// Table controllers
 var tableParams = {
 	color: "#96653A"
 };
@@ -172,23 +172,23 @@ function onPaintingChange() {
   });
 };
 
-// Carpet controllers
-var carpetParams = {
-	carpet: 'carpet-v1.jpg'
+// Floor controllers
+var floorParams = {
+	floor: 'carpet-v1.jpg'
 };
 
 var f8 = gui.addFolder('Floor');
-f8.add(carpetParams, 'carpet', {
+f8.add(floorParams, 'floor', {
   LightGray: 'carpet-v1.jpg',
 	Gray: 'carpet-v4.jpg',
   DarkGray: 'carpet-v3.jpg',
 	Beige: 'carpet-v2.jpg',
 	DarkWood: 'wood.jpg',
 	LightWood:'light-wood.jpg'
-} ).onChange(onCarpetChange);
+} ).onChange(onFloorChange);
 
-function onCarpetChange() {
- carpetName = carpetParams.carpet;
+function onFloorChange() {
+ carpetName = floorParams.floor;
 	texture = new THREE.TextureLoader().setPath('img/carpet/').load(carpetName);
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
